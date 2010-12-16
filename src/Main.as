@@ -1,27 +1,13 @@
-package 
+package
 {
-	import flash.display.Sprite;
-	import flash.events.Event;
-	
-	/**
-	 * ...
-	 * @author Elias Penttilä
-	 */
-	public class Main extends Sprite 
+	import org.flixel.*;
+	[SWF(width = "640", height = "480", backgroundColor = "#000000")]
+
+	public class Main extends FlxGame
 	{
-		
-		public function Main():void 
+		public function Main()
 		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
+			super(320, 240, MenuState, 2);
 		}
-		
-		private function init(e:Event = null):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
-		}
-		
 	}
-	
 }
