@@ -118,6 +118,8 @@ package
 			_explosion.play("explode");
 			_exploding = true;
 			_ship.visible = false;
+			_thrustSound.stop();
+			_thrustSound = null;
 			
 			FlxG.play(explosionSound, 0.1);
 		}
