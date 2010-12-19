@@ -63,9 +63,14 @@ package
 					_player.explode();
 
 				if (_home.isInside(_player.getCenter(), 0))
+				{
+					_player.kill();
 					nextLevel();
+				}
 				else if (_player.dead)
+				{
 					restartLevel();
+				}
 			}
 		}
 		

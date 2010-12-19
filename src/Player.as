@@ -66,11 +66,7 @@ package
 				}
 				else
 				{
-					if (_thrustSound)
-					{
-						_thrustSound.stop();
-						_thrustSound = null;
-					}
+					stopThrustSound();
 				}
 			}
 			else
@@ -118,15 +114,31 @@ package
 			_explosion.play("explode");
 			_exploding = true;
 			_ship.visible = false;
-			_thrustSound.stop();
-			_thrustSound = null;
 			
+			stopThrustSound();
+		
 			FlxG.play(explosionSound, 0.1);
 		}
 		
 		public function get radius():Number
 		{
 			return _ship.width / 2;
+		}
+		
+		public function stopThrustSound():void
+		{
+			if (_thrustSound)
+			{
+				_thrustSound.stop();
+				_thrustSound = null;
+			}
+		}
+		
+		public override function kill():void
+		{
+			stopThrustSound();
+			
+			super.kill();
 		}
 	}
 }
