@@ -6,9 +6,9 @@ package
 
 	internal class Utils
 	{
-		public static function getRandomInt(min:Number, max:Number):Number
+		public static function getRandomInt(min:Number, max:Number, useGlobalSeed:Boolean = true):Number
 		{
-			return min + Math.floor(FlxU.random() * (max - min + 1));
+			return min + Math.floor(FlxU.random(useGlobalSeed) * (max - min + 1));
 		}
 
 		public static function getRandomPoint(rect:Rectangle):Point
