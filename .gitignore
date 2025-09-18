@@ -2,3 +2,4 @@
 /.cpm_cache/
 /.vs/
 /.vscode/
+/CMakeUserPresets.json
