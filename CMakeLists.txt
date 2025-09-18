@@ -7,6 +7,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
+find_program(CLANG_FORMAT
+    NAMES clang-format clang-format-21
+    PATHS "C:/Program Files/LLVM/bin/"
+)
+
 file(
   DOWNLOAD
   https://github.com/cpm-cmake/CPM.cmake/releases/download/v0.42.0/CPM.cmake
@@ -46,3 +51,27 @@ CPMAddPackage(
 )
 
 add_subdirectory(src)
+
+if(CLANG_FORMAT)
+    message("Found clang-format: ${CLANG_FORMAT}")
+
+	file(GLOB_RECURSE
+		SOURCES
+		src/*.cpp
+		src/*.h
+	)
+
+	set(FILE_LIST "")
+
+	foreach(SOURCE ${SOURCES})
+		get_filename_component(FILENAME ${SOURCE} ABSOLUTE)
+		string(APPEND FILE_LIST "${FILENAME}\n")
+	endforeach()
+
+	file(WRITE ${PROJECT_BINARY_DIR}/clang-format-files.txt ${FILE_LIST})
+
+	add_custom_target(
+		clang-format
+		COMMAND ${CLANG_FORMAT} --dry-run --Werror --files=${PROJECT_BINARY_DIR}/clang-format-files.txt
+	)
+endif()
