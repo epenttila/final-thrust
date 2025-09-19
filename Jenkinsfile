@@ -20,6 +20,10 @@ pipeline {
                     filename 'Dockerfile.android'
                 }
             }
+            environment {
+                KEYSTORE = credentials('release-keystore')
+                KEYSTORE_PASSWORD = credentials('release-keystore-password')
+            }
             steps {
                 dir('android') {
                     sh 'gradlew assembleRelease'
