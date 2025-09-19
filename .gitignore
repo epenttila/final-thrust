@@ -3,3 +3,7 @@
 /.vs/
 /.vscode/
 /CMakeUserPresets.json
+/android/.gradle/
+/android/build/
+/android/app/.cxx/
+/android/app/build/
