@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 dir('android') {
-                    sh 'gradlew buildRelease'
+                    sh 'gradlew assembleRelease'
                 }
             }
         }
