@@ -24,12 +24,8 @@ pipeline {
                 dir('android') {
                     sh 'gradlew assembleRelease'
                 }
+                archiveArtifacts artifacts: 'android/app/build/outputs/apk/*/*.apk', fingerprint: true
             }
-        }
-    }
-    post {
-        always {
-            archiveArtifacts artifacts: 'android/app/build/outputs/apk/*/*.apk', fingerprint: true
         }
     }
 }
