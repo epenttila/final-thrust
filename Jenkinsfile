@@ -27,4 +27,9 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            archiveArtifacts artifacts: 'android/app/build/outputs/apk/*/*.apk', fingerprint: true
+        }
+    }
 }
