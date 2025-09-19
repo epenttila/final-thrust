@@ -1,28 +1,28 @@
 pipeline {
     agent none
     stages {
-        stage("Build Linux") {
+        stage('Build Linux') {
             agent {
                 dockerfile {
-                    filename "Dockerfile.linux"
+                    filename 'Dockerfile.linux'
                 }
             }
             steps {
-                dir("build") {
-                    sh "cmake -G Ninja .."
-                    sh "ninja clang-format all"
+                dir('build') {
+                    sh 'cmake -G Ninja ..'
+                    sh 'ninja clang-format all'
                 }
             }
         }
-        stage("Build Android") {
+        stage('Build Android') {
             agent {
                 dockerfile {
-                    filename "Dockerfile.android"
+                    filename 'Dockerfile.android'
                 }
             }
             steps {
-                dir("android") {
-                    sh "gradlew buildRelease"
+                dir('android') {
+                    sh 'gradlew buildRelease'
                 }
             }
         }
