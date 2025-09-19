@@ -43,6 +43,7 @@ RUN apt-get update && apt-get install -y \
     make \
     ninja-build \
     pkg-config \
+    unzip \
     wget \
     ${OPEN_JDK} \
     && rm -rf /var/lib/apt/lists/*
