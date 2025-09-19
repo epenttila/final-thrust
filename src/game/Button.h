@@ -20,8 +20,8 @@ class Button
 {
 public:
 	Button(const std::string& text, SDL_Texture* normalTexture, SDL_Texture* hoverTexture);
-	virtual void update(core::Game& game, float deltaTime);
-	virtual void render(core::Renderer& renderer);
+	void update(core::Game& game, float deltaTime);
+	void render(core::Renderer& renderer);
 	const core::RectF& rect() const { return rect_; }
 	void setRect(const core::RectF& rect) { rect_ = rect; }
 	const TTF_Font* font() const { return font_; }
