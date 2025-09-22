@@ -7,8 +7,8 @@ pipeline {
             }
             steps {
                 dir('build') {
-                    sh 'cmake -G Ninja ..'
-                    sh 'ninja'
+                    bat 'cmake -G Ninja ..'
+                    bat 'ninja'
                 }
             }
         }
