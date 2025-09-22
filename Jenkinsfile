@@ -6,16 +6,8 @@ pipeline {
                 label 'windows'
             }
             steps {
-                script {
-                    def vsInstallPath = bat(
-                        script: '"C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath',
-                        returnStdout: true
-                    ).trim()
-
-                    env.VC_VARSALL = "${vsInstallPath}\\VC\\Auxiliary\\Build\\vcvarsall.bat"
-                }
                 bat """
-                    call "%VC_VARSALL%" amd64
+                    call "C:\\Program Files\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvarsall.bat" amd64
                     cmake --preset msvc-release
                     cmake --build --preset msvc-release
                 """ 
