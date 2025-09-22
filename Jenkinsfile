@@ -6,6 +6,7 @@ pipeline {
                 label 'windows'
             }
             environment {
+                CPM_SOURCE_CACHE = "${env.USERPROFILE}/.cache/CPM"
                 PRESET = 'msvc-release'
             }
             steps {
@@ -46,9 +47,11 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'Dockerfile.linux'
+                    args '-v ${HOME}/.cache:/root/.cache'
                 }
             }
             environment {
+                CPM_SOURCE_CACHE = "${env.HOME}/.cache/CPM"
                 PRESET = 'gcc-release'
             }
             steps {
@@ -66,9 +69,11 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'Dockerfile.android'
+                    args '-v ${HOME}/.cache:/root/.cache'
                 }
             }
             environment {
+                CPM_SOURCE_CACHE = "${env.HOME}/.cache/CPM"
                 KEYSTORE = credentials('release-keystore')
                 KEYSTORE_PASSWORD = credentials('release-keystore-password')
             }
