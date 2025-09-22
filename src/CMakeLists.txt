@@ -22,6 +22,9 @@ target_link_libraries(${TARGET_NAME} core game)
 
 if(NOT ANDROID)
     add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${TARGET_NAME}>/assets
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/share
     )
 endif()
+
+install(TARGETS ${TARGET_NAME})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets/ TYPE DATA)

@@ -7,6 +7,19 @@
 
 namespace core {
 
+namespace {
+
+std::string makeAssetPath(const std::string& dir, const std::string& filename)
+{
+	return
+#if !defined(SDL_PLATFORM_ANDROID)
+		std::string(SDL_GetBasePath()) + "../share/" +
+#endif
+		dir + "/" + filename;
+}
+
+} // namespace
+
 AssetManager::AssetManager(Renderer& renderer)
 	: renderer_(renderer)
 {
@@ -23,12 +36,7 @@ AssetManager::~AssetManager()
 
 TTF_Font* AssetManager::loadFont(const std::string& filename, float size)
 {
-	auto path =
-#if !defined(SDL_PLATFORM_ANDROID)
-		"assets/" +
-#endif
-		std::string("fonts/") + filename;
-
+	const auto path = makeAssetPath("fonts", filename);
 	const auto key = path + "@" + std::to_string(size);
 
 	auto it = fonts_.find(key);
@@ -46,11 +54,7 @@ TTF_Font* AssetManager::loadFont(const std::string& filename, float size)
 
 MIX_Audio* AssetManager::loadAudio(const std::string& filename)
 {
-	auto path =
-#if !defined(SDL_PLATFORM_ANDROID)
-		"assets/" +
-#endif
-		std::string("sounds/") + filename;
+	const auto path = makeAssetPath("sounds", filename);
 
 	auto it = audio_.find(path);
 
@@ -67,11 +71,7 @@ MIX_Audio* AssetManager::loadAudio(const std::string& filename)
 
 SDL_Cursor* AssetManager::loadCursor(const std::string& filename, int hotX, int hotY)
 {
-	auto path =
-#if !defined(SDL_PLATFORM_ANDROID)
-		"assets/" +
-#endif
-		std::string("images/") + filename;
+	const auto path = makeAssetPath("images", filename);
 
 	auto it = cursors_.find(path);
 
@@ -94,11 +94,7 @@ SDL_Cursor* AssetManager::loadCursor(const std::string& filename, int hotX, int 
 
 SDL_Texture* AssetManager::loadTexture(const std::string& filename)
 {
-	auto path =
-#if !defined(SDL_PLATFORM_ANDROID)
-		"assets/" +
-#endif
-		std::string("images/") + filename;
+	const auto path = makeAssetPath("images", filename);
 
 	auto it = textures_.find(path);
 
