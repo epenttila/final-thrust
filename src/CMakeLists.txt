@@ -15,6 +15,7 @@ if(ANDROID)
 else()
     set(TARGET_NAME main)
     add_executable(${TARGET_NAME} main.cpp)
+    set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME ${CMAKE_PROJECT_NAME})
 endif()
 
 target_compile_options(${TARGET_NAME} PRIVATE ${WARNING_OPTIONS})
