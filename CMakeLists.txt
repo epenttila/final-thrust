@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(FinalThrust VERSION 1.0.0 LANGUAGES CXX)
+project(FinalThrust VERSION 0.0.1 LANGUAGES CXX)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
