@@ -7,26 +7,24 @@ pipeline {
             }
             steps {
                 script {
-                    def fallbackPath = "C:\\Program Files\\Microsoft Visual Studio\\2022\\BuildTools"
+                    def vswhereExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe"
 
-                    def vsInstallPath = bat(
-                        script: '"C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath',
+                    def vsInstallPath = powershell(
+                        script: "& '${vswhereExe}' -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath",
                         returnStdout: true
                     ).trim()
 
                     if (!vsInstallPath) {
-                        echo "vswhere did not return a path, falling back to default: ${fallbackPath}"
-                        vsInstallPath = fallbackPath
+                        error "No Visual Studio installation found (vswhere + fallbacks failed)"
                     }
 
                     def vcvarsall = "${vsInstallPath}\\VC\\Auxiliary\\Build\\vcvarsall.bat"
-
                     if (!fileExists(vcvarsall)) {
                         error "Could not find vcvarsall.bat at: ${vcvarsall}"
                     }
 
                     env.VC_VARSALL = vcvarsall
-                    echo "Using vcvarsall at: ${vcvarsall}"
+                    echo "Using vcvarsall: ${vcvarsall}"
                 }
                 bat """
                     call "%VC_VARSALL%" amd64
