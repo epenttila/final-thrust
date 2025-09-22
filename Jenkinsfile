@@ -15,7 +15,7 @@ pipeline {
                     env.VC_VARSALL = "${vsInstallPath}\\VC\\Auxiliary\\Build\\vcvarsall.bat"
                 }
                 bat """
-                    call "%VC_VARSALL% amd64
+                    call "%VC_VARSALL%" amd64
                     cmake --preset msvc-release
                     cmake --build --preset msvc-release
                 """ 
