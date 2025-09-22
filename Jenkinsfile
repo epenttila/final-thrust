@@ -5,6 +5,9 @@ pipeline {
             agent {
                 label 'windows'
             }
+            environment {
+                PRESET = 'msvc-release'
+            }
             steps {
                 script {
                     def vswhereExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe"
@@ -28,10 +31,10 @@ pipeline {
                 }
                 bat """
                     call "%VC_VARSALL%" amd64
-                    cmake --preset msvc-release
-                    cmake --build build/msvc-release --target package
+                    cmake --preset %PRESET%
+                    cmake --build build/%PRESET% --target package
                 """
-                archiveArtifacts artifacts: 'build/msvc-release/*.zip', fingerprint: true
+                archiveArtifacts artifacts: 'build/${env.PRESET}/*.zip', fingerprint: true
             }
         }
         stage('Build Linux') {
@@ -40,12 +43,15 @@ pipeline {
                     filename 'Dockerfile.linux'
                 }
             }
+            environment {
+                PRESET = 'gcc-release'
+            }
             steps {
                 dir('build') {
-                    sh 'cmake --preset gcc-release'
-                    sh 'cmake --build build/gcc-release --target package'
+                    sh 'cmake --preset ${PRESET}'
+                    sh 'cmake --build build/${PRESET} --target package'
                 }
-                archiveArtifacts artifacts: 'build/gcc-release/*.zip', fingerprint: true
+                archiveArtifacts artifacts: 'build/${env.PRESET}/*.zip', fingerprint: true
             }
         }
         stage('Build Android') {
