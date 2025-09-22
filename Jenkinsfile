@@ -29,8 +29,9 @@ pipeline {
                 bat """
                     call "%VC_VARSALL%" amd64
                     cmake --preset msvc-release
-                    cmake --build --preset msvc-release
-                """ 
+                    cmake --build build/msvc-release --target package
+                """
+                archiveArtifacts artifacts: 'build/msvc-release/*.zip', fingerprint: true
             }
         }
         stage('Build Linux') {

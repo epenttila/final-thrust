@@ -84,15 +84,5 @@
         "CMAKE_BUILD_TYPE": "Release"
       }
     }
-  ],
-  "buildPresets": [
-    {
-      "name": "msvc-debug",
-      "configurePreset": "msvc-debug"
-    },
-    {
-      "name": "msvc-release",
-      "configurePreset": "msvc-release"
-    }
   ]
 }

@@ -71,3 +71,7 @@ if(CLANG_FORMAT)
 		COMMAND ${CLANG_FORMAT} --dry-run --Werror --files=${PROJECT_BINARY_DIR}/clang-format-files.txt
 	)
 endif()
+
+set(CPACK_GENERATOR "ZIP")
+
+include(CPack)
