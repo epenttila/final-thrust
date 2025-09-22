@@ -35,6 +35,7 @@ pipeline {
         }
         stage('Build Linux') {
             agent {
+                label 'linux'
                 dockerfile {
                     filename 'Dockerfile.linux'
                 }
@@ -48,6 +49,7 @@ pipeline {
         }
         stage('Build Android') {
             agent {
+                label 'linux'
                 dockerfile {
                     filename 'Dockerfile.android'
                 }
