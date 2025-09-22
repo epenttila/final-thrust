@@ -37,7 +37,6 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'Dockerfile.linux'
-                    label 'linux'
                 }
             }
             steps {
@@ -51,7 +50,6 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'Dockerfile.android'
-                    label 'linux'
                 }
             }
             environment {
