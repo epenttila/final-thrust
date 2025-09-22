@@ -42,9 +42,10 @@ pipeline {
             }
             steps {
                 dir('build') {
-                    sh 'cmake -G Ninja ..'
-                    sh 'ninja clang-format all'
+                    sh 'cmake --preset gcc-release'
+                    sh 'cmake --build build/gcc-release --target package'
                 }
+                archiveArtifacts artifacts: 'build/gcc-release/*.zip', fingerprint: true
             }
         }
         stage('Build Android') {
