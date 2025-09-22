@@ -34,7 +34,7 @@ pipeline {
                     cmake --preset %PRESET%
                     cmake --build build/%PRESET% --target package
                 """
-                archiveArtifacts artifacts: 'build/${env.PRESET}/*.zip', fingerprint: true
+                archiveArtifacts artifacts: "build/${env.PRESET}/*.zip", fingerprint: true
             }
         }
         stage('Build Linux') {
@@ -51,7 +51,7 @@ pipeline {
                     sh 'cmake --preset ${PRESET}'
                     sh 'cmake --build build/${PRESET} --target package'
                 }
-                archiveArtifacts artifacts: 'build/${env.PRESET}/*.zip', fingerprint: true
+                archiveArtifacts artifacts: "build/${env.PRESET}/*.zip", fingerprint: true
             }
         }
         stage('Build Android') {
