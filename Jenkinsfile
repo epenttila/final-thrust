@@ -47,10 +47,8 @@ pipeline {
                 PRESET = 'gcc-release'
             }
             steps {
-                dir('build') {
-                    sh 'cmake --preset ${PRESET}'
-                    sh 'cmake --build build/${PRESET} --target package'
-                }
+                sh 'cmake --preset ${PRESET}'
+                sh 'cmake --build build/${PRESET} --target package'
                 archiveArtifacts artifacts: "build/${env.PRESET}/*.zip", fingerprint: true
             }
         }
