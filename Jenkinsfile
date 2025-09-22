@@ -36,6 +36,11 @@ pipeline {
                 """
                 archiveArtifacts artifacts: "build/${env.PRESET}/*.zip", fingerprint: true
             }
+            post {
+                cleanup {
+                    cleanWs()
+                }
+            }
         }
         stage('Build Linux') {
             agent {
@@ -50,6 +55,11 @@ pipeline {
                 sh 'cmake --preset ${PRESET}'
                 sh 'cmake --build build/${PRESET} --target package'
                 archiveArtifacts artifacts: "build/${env.PRESET}/*.zip", fingerprint: true
+            }
+            post {
+                cleanup {
+                    cleanWs()
+                }
             }
         }
         stage('Build Android') {
@@ -67,6 +77,11 @@ pipeline {
                     sh 'gradlew assembleRelease'
                 }
                 archiveArtifacts artifacts: 'android/app/build/outputs/apk/*/*.apk', fingerprint: true
+            }
+            post {
+                cleanup {
+                    cleanWs()
+                }
             }
         }
     }
