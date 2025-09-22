@@ -1,6 +1,17 @@
 pipeline {
     agent none
     stages {
+        stage('Build Windows') {
+            agent {
+                label 'windows'
+            }
+            steps {
+                dir('build') {
+                    sh 'cmake -G Ninja ..'
+                    sh 'ninja'
+                }
+            }
+        }
         stage('Build Linux') {
             agent {
                 dockerfile {
