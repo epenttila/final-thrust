@@ -3,6 +3,8 @@
 #include <array>
 #include "Vec2.h"
 
+union SDL_Event;
+
 namespace core {
 
 class Renderer;
@@ -12,7 +14,7 @@ class InputManager
 public:
 	InputManager(Renderer& renderer);
 	~InputManager() = default;
-	void update();
+	void update(SDL_Event* event);
 	bool isKeyDown(int key) const { return keyDown_[key]; }
 	bool isKeyPressed(int key) const { return keyPressed_.contains(key); }
 	bool isKeyReleased(int key) const { return keyReleased_.contains(key); }
@@ -22,6 +24,7 @@ public:
 	Vec2f mousePosition() const { return mousePosition_; }
 	Vec2f mouseDelta() const { return mouseDelta_; }
 	bool isQuit() const { return quit_; }
+	void endFrame();
 
 private:
 	Renderer& renderer_;

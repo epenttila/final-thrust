@@ -41,36 +41,39 @@ Game::~Game()
 	SDL_Quit();
 }
 
-void Game::run(std::unique_ptr<State> state)
+void Game::init(std::unique_ptr<State> state)
 {
 	state_->push(*this, std::move(state));
+}
 
-	while (!state_->isEmpty())
-	{
-		const auto currentTime = SDL_GetTicks();
-		const auto deltaTime = (currentTime - lastFrameTime_) / 1000.0f;
-		lastFrameTime_ = currentTime;
+bool Game::update()
+{
+	if (state_->isEmpty())
+		return false;
 
-		input_->update();
+	if (input_->isQuit())
+		return false;
 
-		if (input_->isQuit())
-			return;
+	if ((input_->isKeyDown(SDL_SCANCODE_LALT) || input_->isKeyDown(SDL_SCANCODE_RALT))
+		&& input_->isKeyPressed(SDL_SCANCODE_RETURN))
+		renderer_->toggleFullscreen();
 
-		if ((input_->isKeyDown(SDL_SCANCODE_LCTRL) || input_->isKeyDown(SDL_SCANCODE_RCTRL))
-			&& input_->isKeyPressed(SDL_SCANCODE_RETURN))
-			renderer_->toggleFullscreen();
+	const auto currentTime = SDL_GetTicks();
+	const auto deltaTime = (currentTime - lastFrameTime_) / 1000.0f;
+	lastFrameTime_ = currentTime;
 
-		state_->update(*this, deltaTime);
-		renderer_->beginFrame();
-		state_->render(*renderer_);
-		renderer_->endFrame();
+	state_->update(*this, deltaTime);
+	renderer_->beginFrame();
+	state_->render(*renderer_);
+	renderer_->endFrame();
+	input_->endFrame();
 
-		const auto frameTime = SDL_GetTicks() - currentTime;
-		const auto frameTimeLimit = static_cast<std::uint64_t>(1000 / fpsLimiter_);
+	return true;
+}
 
-		if (frameTime < frameTimeLimit)
-			SDL_Delay(static_cast<std::uint32_t>(frameTimeLimit - frameTime));
-	}
+void Game::event(SDL_Event* event)
+{
+	input_->update(event);
 }
 
 int Game::width() const
@@ -81,6 +84,11 @@ int Game::width() const
 int Game::height() const
 {
 	return renderer_->logicalHeight();
+}
+
+void Game::setFramerateLimit(std::string_view limit)
+{
+	SDL_SetHint(SDL_HINT_MAIN_CALLBACK_RATE, limit.data());
 }
 
 } // namespace core
