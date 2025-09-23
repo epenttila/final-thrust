@@ -19,7 +19,6 @@ namespace game {
 PlayState::PlayState(core::Game& game, int level)
 	: level_(level)
 	, player_(new Player(game, core::Vec2f(20, 120)))
-	, backgroundTexture_(game.assets()->loadTexture("background.png"))
 	, font_(game.assets()->loadFont("nokiafc22.ttf", 8))
 	, bigFont_(game.assets()->loadFont("nokiafc22.ttf", 16))
 	, music_(game.assets()->loadAudio("variables.mp3"))
@@ -67,6 +66,15 @@ PlayState::PlayState(core::Game& game, int level)
 		const auto y = core::random(0.0f, static_cast<float>(game.height()));
 
 		asteroids_.push_back(std::make_unique<Asteroid>(game, core::Vec2f(x, y)));
+	}
+
+	for (int i = 0; i < 100; ++i)
+	{
+		const auto x = static_cast<float>(core::random(0, game.width()));
+		const auto y = static_cast<float>(core::random(0, game.height()));
+		const auto m = core::random(0.0f, 0.5f);
+
+		stars_.push_back(Star{.x = x, .y = y, .m = m});
 	}
 }
 
@@ -130,7 +138,7 @@ void PlayState::update(core::Game& game, float deltaTime)
 
 void PlayState::render(core::Renderer& renderer)
 {
-	renderer.drawTexture(backgroundTexture_, renderer.logicalRect());
+	renderBackground(renderer);
 
 	player_->render(renderer);
 
@@ -236,6 +244,17 @@ void PlayState::renderFuelBar(core::Renderer& renderer)
 		),
 		fuelBarColor
 	);
+}
+
+void PlayState::renderBackground(core::Renderer& renderer)
+{
+	renderer.fillRectangle(renderer.logicalRect(), {0, 0, 0, 255});
+
+	for (const auto& star : stars_)
+	{
+		const auto m = static_cast<Uint8>(255 * star.m);
+		renderer.drawPoint({star.x, star.y}, {m, m, m, 255});
+	}
 }
 
 } // namespace game

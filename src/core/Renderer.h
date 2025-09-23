@@ -65,6 +65,7 @@ public:
 	void toggleFullscreen();
 	void drawRectangle(const RectF& rectangle, SDL_Color color);
 	void fillRectangle(const RectF& rectangle, SDL_Color color);
+	void drawPoint(const Vec2f& point, SDL_Color color);
 
 private:
 	SDL_Window* window_ = nullptr;

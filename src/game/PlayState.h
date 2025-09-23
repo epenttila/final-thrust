@@ -26,18 +26,26 @@ public:
 	void exit(core::Game& game) override;
 
 private:
+	struct Star
+	{
+		float x = 0;
+		float y = 0;
+		float m = 0.0f;
+	};
+
 	core::Vec2f makeGravity(RoundObject& object) const;
 	bool isPlayerCollidingWithWorld(core::Game& game) const;
 	void renderFuelBar(core::Renderer& renderer);
+	void renderBackground(core::Renderer& renderer);
 
 	int level_ = 0;
 	std::unique_ptr<Player> player_;
 	std::vector<std::unique_ptr<Planet>> planets_;
 	std::vector<std::unique_ptr<Asteroid>> asteroids_;
-	SDL_Texture* backgroundTexture_ = nullptr;
 	TTF_Font* font_ = nullptr;
 	TTF_Font* bigFont_ = nullptr;
 	MIX_Audio* music_ = nullptr;
+	std::vector<Star> stars_;
 };
 
 } // namespace game

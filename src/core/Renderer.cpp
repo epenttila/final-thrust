@@ -229,4 +229,10 @@ void Renderer::fillRectangle(const RectF& rectangle, SDL_Color color)
 	SDL_RenderFillRect(renderer_, &r);
 }
 
+void Renderer::drawPoint(const Vec2f& point, SDL_Color color)
+{
+	SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
+	SDL_RenderPoint(renderer_, point.x(), point.y());
+}
+
 } // namespace core
