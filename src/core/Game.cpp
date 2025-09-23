@@ -56,6 +56,10 @@ void Game::run(std::unique_ptr<State> state)
 		if (input_->isQuit())
 			return;
 
+		if ((input_->isKeyDown(SDL_SCANCODE_LCTRL) || input_->isKeyDown(SDL_SCANCODE_RCTRL))
+			&& input_->isKeyPressed(SDL_SCANCODE_RETURN))
+			renderer_->toggleFullscreen();
+
 		state_->update(*this, deltaTime);
 		renderer_->beginFrame();
 		state_->render(*renderer_);

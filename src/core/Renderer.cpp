@@ -12,7 +12,13 @@ Renderer::Renderer(const std::string& title, int windowWidth, int windowHeight)
 	: windowWidth_(windowWidth)
 	, windowHeight_(windowHeight)
 {
-	if (window_ = SDL_CreateWindow(title.c_str(), windowWidth, windowHeight, SDL_WINDOW_RESIZABLE); !window_)
+	if (window_ = SDL_CreateWindow(
+			title.c_str(),
+			windowWidth,
+			windowHeight,
+			(fullscreen_ ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE
+		);
+		!window_)
 		throw std::runtime_error(std::string("Failed to create window: ") + SDL_GetError());
 
 	if (renderer_ = SDL_CreateRenderer(window_, nullptr); !renderer_)
@@ -196,6 +202,12 @@ void Renderer::drawText(TTF_Font* font, RectF rect, const std::string& text, SDL
 	drawTexture(texture, nullptr, &r);
 
 	SDL_DestroyTexture(texture);
+}
+
+void Renderer::toggleFullscreen()
+{
+	fullscreen_ = !fullscreen_;
+	SDL_SetWindowFullscreen(window_, fullscreen_);
 }
 
 } // namespace core

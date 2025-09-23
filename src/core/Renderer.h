@@ -62,6 +62,7 @@ public:
 		return RectF(0.0f, 0.0f, static_cast<float>(logicalWidth_), static_cast<float>(logicalHeight_));
 	}
 	SDL_Texture* createTextureFromSurface(SDL_Surface* surface);
+	void toggleFullscreen();
 
 private:
 	SDL_Window* window_ = nullptr;
@@ -70,6 +71,7 @@ private:
 	int windowHeight_ = 0;
 	int logicalWidth_ = 0;
 	int logicalHeight_ = 0;
+	bool fullscreen_ = true;
 };
 
 } // namespace core
