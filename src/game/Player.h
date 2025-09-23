@@ -41,6 +41,7 @@ private:
 	static constexpr int FRAME_HEIGHT = 8;
 
 	void accelerate(core::Game& game, float deltaTime);
+	void stopThrustSound();
 
 	SDL_Texture* exhaustTexture_ = nullptr;
 	SDL_Texture* explosionTexture_ = nullptr;

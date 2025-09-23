@@ -24,7 +24,10 @@ Player::Player(core::Game& game, const core::Vec2f& position)
 {
 }
 
-Player::~Player() {}
+Player::~Player()
+{
+	stopThrustSound();
+}
 
 void Player::update(core::Game& game, float deltaTime)
 {
@@ -35,14 +38,9 @@ void Player::update(core::Game& game, float deltaTime)
 		accelerating_ = false;
 
 		if (game.input()->isMouseDown())
-		{
 			accelerate(game, deltaTime);
-		}
 		else
-		{
-			MIX_StopTrack(thrustTrack_, 0);
-			thrustTrack_ = nullptr;
-		}
+			stopThrustSound();
 
 		idle_->update(deltaTime);
 
@@ -52,6 +50,8 @@ void Player::update(core::Game& game, float deltaTime)
 	}
 	case PlayerState::Exploding:
 	{
+		stopThrustSound();
+
 		explosion_->update(deltaTime);
 
 		if (explosion_->isFinished())
@@ -60,7 +60,7 @@ void Player::update(core::Game& game, float deltaTime)
 		return;
 	}
 	case PlayerState::Dead:
-	case PlayerState::Home: return;
+	case PlayerState::Home: stopThrustSound(); return;
 	}
 }
 
@@ -101,6 +101,7 @@ void Player::accelerate(core::Game& game, float deltaTime)
 	if (fuel_ <= 0)
 	{
 		accelerating_ = false;
+		stopThrustSound();
 		return;
 	}
 
@@ -126,6 +127,15 @@ void Player::setState(core::Game& game, PlayerState state)
 
 	if (state_ == PlayerState::Exploding)
 		game.audio()->playSound(explosionSound_, 0.1f);
+}
+
+void Player::stopThrustSound()
+{
+	if (!thrustTrack_)
+		return;
+
+	MIX_StopTrack(thrustTrack_, 0);
+	thrustTrack_ = nullptr;
 }
 
 } // namespace game
