@@ -28,6 +28,7 @@ public:
 private:
 	core::Vec2f makeGravity(RoundObject& object) const;
 	bool isPlayerCollidingWithWorld(core::Game& game) const;
+	void renderFuelBar(core::Renderer& renderer);
 
 	int level_ = 0;
 	std::unique_ptr<Player> player_;

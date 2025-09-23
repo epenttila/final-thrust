@@ -46,7 +46,7 @@ public:
 		const std::string& text,
 		SDL_Color color
 	);
-	void drawText(TTF_Font* font, RectF rectangle, const std::string& text, SDL_Color color);
+	void drawText(TTF_Font* font, const RectF& rectangle, const std::string& text, SDL_Color color);
 	void setLogicalSize(int width, int height);
 	Vec2f windowToLogical(const Vec2f& windowPos) const;
 	int windowWidth() const { return windowWidth_; }
@@ -63,6 +63,8 @@ public:
 	}
 	SDL_Texture* createTextureFromSurface(SDL_Surface* surface);
 	void toggleFullscreen();
+	void drawRectangle(const RectF& rectangle, SDL_Color color);
+	void fillRectangle(const RectF& rectangle, SDL_Color color);
 
 private:
 	SDL_Window* window_ = nullptr;

@@ -112,7 +112,7 @@ void Player::accelerate(core::Game& game, float deltaTime)
 	addAcceleration(v * 90.0f);
 	setAngle(core::degrees(v.angle()));
 
-	fuel_ -= 60.0f * deltaTime;
+	fuel_ -= 0.6f * deltaTime;
 
 	if (fuel_ < 0)
 		fuel_ = 0;

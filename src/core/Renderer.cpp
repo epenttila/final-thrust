@@ -23,6 +23,8 @@ Renderer::Renderer(const std::string& title, int windowWidth, int windowHeight)
 
 	if (renderer_ = SDL_CreateRenderer(window_, nullptr); !renderer_)
 		throw std::runtime_error(std::string("Failed to create renderer: ") + SDL_GetError());
+
+	SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
 }
 
 Renderer::~Renderer()
@@ -186,7 +188,7 @@ void Renderer::drawText(
 	SDL_DestroyTexture(texture);
 }
 
-void Renderer::drawText(TTF_Font* font, RectF rect, const std::string& text, SDL_Color color)
+void Renderer::drawText(TTF_Font* font, const RectF& rect, const std::string& text, SDL_Color color)
 {
 	if (text.empty())
 		return;
@@ -208,6 +210,23 @@ void Renderer::toggleFullscreen()
 {
 	fullscreen_ = !fullscreen_;
 	SDL_SetWindowFullscreen(window_, fullscreen_);
+}
+
+void Renderer::drawRectangle(const RectF& rectangle, SDL_Color color)
+{
+	const auto r = SDL_FRect{rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height()};
+
+	SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
+	SDL_RenderRect(renderer_, &r);
+}
+
+
+void Renderer::fillRectangle(const RectF& rectangle, SDL_Color color)
+{
+	const auto r = SDL_FRect{rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height()};
+
+	SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
+	SDL_RenderFillRect(renderer_, &r);
 }
 
 } // namespace core

@@ -48,7 +48,7 @@ private:
 	MIX_Audio* thrustSound_ = nullptr;
 	MIX_Track* thrustTrack_ = nullptr;
 	MIX_Audio* explosionSound_ = nullptr;
-	float fuel_ = 100.0f;
+	float fuel_ = 1.0f;
 	bool accelerating_ = false;
 	PlayerState state_ = PlayerState::Flying;
 	std::unique_ptr<core::Animation> explosion_;

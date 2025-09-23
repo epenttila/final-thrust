@@ -141,14 +141,8 @@ void PlayState::render(core::Renderer& renderer)
 		asteroid->render(renderer);
 
 	renderer.drawText(font_, {0, 0}, 1.0f, 1.0f, "Level " + std::to_string(level_ + 1), {255, 255, 255, 255});
-	renderer.drawText(
-		font_,
-		renderer.logicalRect().topRight(),
-		-1.0f,
-		1.0f,
-		std::to_string(static_cast<int>(player_->fuel())) + "%",
-		{255, 255, 255, 255}
-	);
+
+	renderFuelBar(renderer);
 
 	const auto center = renderer.logicalRect().center();
 
@@ -198,6 +192,50 @@ bool PlayState::isPlayerCollidingWithWorld(core::Game& game) const
 	}
 
 	return !core::RectF(-50.0f, -50.0f, game.width() + 100.0f, game.height() + 100.0f).contains(player_->position());
+}
+
+void PlayState::renderFuelBar(core::Renderer& renderer)
+{
+	static constexpr auto fuelBarMargin = 3;
+	static constexpr auto fuelBarBorder = 1;
+	static constexpr auto fuelBarPadding = 1;
+	const auto fuelBarX = renderer.logicalWidth() / 4 * 3;
+	const auto fuelBarWidth = renderer.logicalWidth() / 4 - fuelBarMargin;
+	const auto fuelBarHeight = 10;
+
+	renderer.drawRectangle(
+		core::RectF(
+			fuelBarX,
+			fuelBarMargin,
+			fuelBarWidth,
+			fuelBarHeight
+		),
+		{255, 255, 255, 255}
+	);
+
+	const auto fuelWidth = static_cast<int>(player_->fuel() * fuelBarWidth);
+	auto fuelBarColor = SDL_Color{0, 0, 0, 128};
+
+	if (player_->fuel() > 0.5f)
+	{
+		fuelBarColor.r = static_cast<Uint8>(255 * (1.0f - player_->fuel()) * 2.0f);
+		fuelBarColor.g = 255;
+	}
+	else
+	{
+		fuelBarColor.r = 255;
+		fuelBarColor.g = static_cast<Uint8>(255 * player_->fuel() * 2.0f);
+	}
+
+	renderer.fillRectangle(
+		core::RectF(
+			fuelBarX + fuelBarBorder + fuelBarPadding + fuelBarWidth - fuelWidth,
+			fuelBarMargin + fuelBarBorder + fuelBarPadding,
+			fuelWidth - 2 * (fuelBarBorder + fuelBarPadding),
+			fuelBarHeight - 2 * (fuelBarBorder + fuelBarPadding)
+		),
+		fuelBarColor
+	);
 }
 
 } // namespace game
