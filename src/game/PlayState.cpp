@@ -32,7 +32,7 @@ PlayState::PlayState(core::Game& game, int level)
 
 	const auto homeX = core::random(gameWidth - ZONE_WIDTH, gameWidth);
 	const auto homeY = core::random(0.0f, gameHeight);
-	homePlanet_ = std::make_unique<Planet>(game, core::Vec2f(homeX, homeY), PlanetType::Earth);
+	planets_.push_back(std::make_unique<Planet>(game, core::Vec2f(homeX, homeY), PlanetType::Earth));
 
 	const auto gridSize = static_cast<int>(std::ceil(std::sqrt(MAX_LEVEL)));
 	const auto gridWidth = gameWidth - ZONE_WIDTH - ZONE_WIDTH;
@@ -94,7 +94,7 @@ void PlayState::update(core::Game& game, float deltaTime)
 
 	for (auto& asteroid : asteroids_)
 	{
-		applyGravity(*asteroid, 10.0f);
+		asteroid->setAcceleration(makeGravity(*asteroid) * 10.0f);
 		asteroid->update(game, deltaTime);
 	}
 
@@ -102,13 +102,13 @@ void PlayState::update(core::Game& game, float deltaTime)
 	{
 	case PlayerState::Flying:
 	{
-		applyGravity(*player_, 100.0f);
+		player_->setAcceleration(makeGravity(*player_) * 100.0f);
 		player_->update(game, deltaTime);
 
-		if (isPlayerCollidingWithWorld(game))
-			player_->setState(game, PlayerState::Exploding);
-		else if (homePlanet_->contains(player_->position()))
+		if (planets_[0]->contains(player_->position()))
 			player_->setState(game, PlayerState::Home);
+		else if (isPlayerCollidingWithWorld(game))
+			player_->setState(game, PlayerState::Exploding);
 
 		return;
 	}
@@ -133,7 +133,6 @@ void PlayState::render(core::Renderer& renderer)
 	renderer.drawTexture(backgroundTexture_, renderer.logicalRect());
 
 	player_->render(renderer);
-	homePlanet_->render(renderer);
 
 	for (auto& planet : planets_)
 		planet->render(renderer);
@@ -168,20 +167,20 @@ void PlayState::render(core::Renderer& renderer)
 	}
 }
 
-void PlayState::applyGravity(RoundObject& object, float coefficient)
+core::Vec2f PlayState::makeGravity(RoundObject& object) const
 {
 	auto gravity = core::Vec2f(0, 0);
 
 	for (const auto& planet : planets_)
 	{
-		const auto r = object.position() - planet->position();
+		const auto r = planet->position() - object.position();
 		const auto dd = r.lengthSquared();
 
 		if (dd > 1.0f)
-			gravity += r * coefficient / dd;
+			gravity += r / dd;
 	}
 
-	object.setAcceleration(-gravity);
+	return gravity;
 }
 
 bool PlayState::isPlayerCollidingWithWorld(core::Game& game) const

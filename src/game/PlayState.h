@@ -26,12 +26,11 @@ public:
 	void exit(core::Game& game) override;
 
 private:
-	void applyGravity(RoundObject& object, float coefficient);
+	core::Vec2f makeGravity(RoundObject& object) const;
 	bool isPlayerCollidingWithWorld(core::Game& game) const;
 
 	int level_ = 0;
 	std::unique_ptr<Player> player_;
-	std::unique_ptr<Planet> homePlanet_;
 	std::vector<std::unique_ptr<Planet>> planets_;
 	std::vector<std::unique_ptr<Asteroid>> asteroids_;
 	SDL_Texture* backgroundTexture_ = nullptr;
