@@ -9,7 +9,7 @@ int main(int, char**)
 {
 	try
 	{
-		auto game = core::Game("Final Thrust", 320, 240, 2);
+		auto game = core::Game("Final Thrust", 320, 180, 4);
 		game.run(std::make_unique<game::MenuState>(game));
 	}
 	catch (const std::exception& e)
